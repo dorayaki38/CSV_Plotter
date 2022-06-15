@@ -1,4 +1,4 @@
-import math
+ï»¿import math
 import os
 import pandas as pd
 import matplotlib as mpl
@@ -12,64 +12,65 @@ from matplotlib.ticker import ScalarFormatter
 import isDirNull
 
 class CSV_Poltter:
-    def csv_poltter(self, file_path, DataFrame, is_Check=True):
-        print("csv_poltter")
-        while not file_path:
-            file_path = self._open_folder()
+	def csv_poltter(self, file_path = None, DataFrame = None, is_Check=True):
+		print("csv_poltter")
+		while not file_path:
+			file_path = self._open_folder()
 
-        # •Û‘¶ƒtƒHƒ‹ƒ_‚Ìì¬‚ÆŠm”F
-        result_folder_name = "Result"
-        basename_without_extension = os.path.splitext(os.path.basename(file_path))[0]
-        os.makedirs(f"./{result_folder_name}", exist_ok=True)
-        os.makedirs(f"./{result_folder_name}/{basename_without_extension}", exist_ok=True)
-        if(not is_Check):
-            isDirNull.result_output_folder(f"./{result_folder_name}/{basename_without_extension}/Figure")
+		# ä¿å­˜ãƒ•ã‚©ãƒ«ãƒ€ã®ä½œæˆã¨ç¢ºèª
+		result_folder_name = "Result"
+		basename_without_extension = os.path.splitext(os.path.basename(file_path))[0]
+		os.makedirs(f"./{result_folder_name}", exist_ok=True)
+		os.makedirs(f"./{result_folder_name}/{basename_without_extension}", exist_ok=True)
+		if(not is_Check):
+			isDirNull.result_output_folder(f"./{result_folder_name}/{basename_without_extension}/Figure")
 
-        # ƒf[ƒ^‚Ì“Ç‚Ýž‚Ý
-        fig = DataFrame.plot(x='frame', y='liquid_volume')
-        fig.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
-    
+		# ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+		fig = DataFrame.plot(x='frame', y='liquid_volume')
+		fig.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+	
 
-        # Œ³ƒf[ƒ^‚É‚æ‚Á‚ÄyŽ²‚ÌŠî€‚ð•Ï‚¦‚éB
-        y_min_raw, y_max_raw = fig.get_ylim()
-    
-        if y_min_raw > 0:
-            y_min = 0
-        else:
-            y_min = y_min_raw
+		# å…ƒãƒ‡ãƒ¼ã‚¿ã«ã‚ˆã£ã¦yè»¸ã®åŸºæº–ã‚’å¤‰ãˆã‚‹ã€‚
+		y_min_raw, y_max_raw = fig.get_ylim()
+	
+		if y_min_raw > 0:
+			y_min = 0
+		else:
+			y_min = y_min_raw
 
-        if y_max_raw < 0:
-            y_max = 0
-        else:
-            y_max = y_max_raw
+		if y_max_raw < 0:
+			y_max = 0
+		else:
+			y_max = y_max_raw
 
-        fig.set_ylim(y_min, y_max)
+		fig.set_ylim(y_min, y_max)
 
-        # ƒ‰ƒxƒ‹Ý’è
-        plt.xlabel('Frame number', fontsize=16)
-        plt.ylabel(r"Estimated volume of liquid [pixel$^3$]", fontsize=14)
-    
-        # ƒOƒŠƒbƒhÝ’è
-        plt.minorticks_on()
-        plt.grid(which = "major", axis = "x", color = "gray", alpha = 0.3,linestyle = "-")
-        plt.grid(which = "both", axis = "y", color = "gray", alpha = 0.3,linestyle = "-")
-    
-        # •Û‘¶
-        plt.savefig(f"./{result_folder_name}/{basename_without_extension}/Figure/{basename_without_extension}_LV.jpg")
-        plt.close('all')
+		# ãƒ©ãƒ™ãƒ«è¨­å®š
+		plt.xlabel('Frame number', fontsize=16)
+		plt.ylabel(r"Estimated volume of liquid [pixel$^3$]", fontsize=14)
+	
+		# ã‚°ãƒªãƒƒãƒ‰è¨­å®š
+		plt.minorticks_on()
+		plt.grid(which = "major", axis = "x", color = "gray", alpha = 0.3,linestyle = "-")
+		plt.grid(which = "both", axis = "y", color = "gray", alpha = 0.3,linestyle = "-")
+	
+		# ä¿å­˜
+		plt.savefig(f"./{result_folder_name}/{basename_without_extension}/Figure/{basename_without_extension}_LV.jpg")
+		plt.close('all')
 
 
-    def _open_folder(self):
-        print("ƒOƒ‰ƒt‰»‚·‚éCSVƒtƒ@ƒCƒ‹‚ð‘I‚ñ‚Å‚­‚¾‚³‚¢")
-	    file_type = [('CSVƒtƒ@ƒCƒ‹', '*.csv'),('CSVƒtƒ@ƒCƒ‹', '*.txt')]
-        
-	    root = tkinter.Tk()
-	    
-        file_path = None
+	def _open_folder(self):
+		print("ã‚°ãƒ©ãƒ•åŒ–ã™ã‚‹CSVãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸ã‚“ã§ãã ã•ã„")
+		file_type = [('CSVãƒ•ã‚¡ã‚¤ãƒ«', '*.csv'),('CSVãƒ•ã‚¡ã‚¤ãƒ«', '*.txt')]
+		
+		root = tkinter.Tk()
+		
+		file_path = None
 		file_path = tkinter.filedialog.askopenfilename(filetypes = file_type, initialdir = ".")
 
-	    root.destroy()
+		root.destroy()
 		return file_path
 
 if __name__ == '__main__':
-    csv_poltter()
+	poltter = CSV_Poltter()
+	poltter.csv_poltter()
