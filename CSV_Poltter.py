@@ -48,7 +48,9 @@ class CSV_Poltter:
 		plt.grid(which = "both", axis = "y", color = "gray", alpha = 0.3,linestyle = "-")
 	
 		# 保存
-		plt.savefig(f"./{result_folder_name}/{basename_without_extension}/Figure/{basename_without_extension}_LV.jpg")
+		path_savefig = f"./{result_folder_name}/{basename_without_extension}/{basename_without_extension}_{axes_y_name}.jpg"
+		plt.savefig(path_savefig)
+		print(f"{path_savefig} にグラフを保存しました。")
 		plt.close('all')
 
 
@@ -85,7 +87,7 @@ class CSV_Poltter:
 	def _ask_which_data_to_use(self, dataframe: DataFrame, axis: str) -> str:
 		headers = list(dataframe.columns.values)
 		
-		print(f"どの列を {axis} 軸に設定しますか。")
+		print(f"Q : どの列を {axis} 軸に設定しますか。")
 		index_count: int = 0
 		for i, header in enumerate(headers):
 			print(f"{i} : {headers[i]}")
