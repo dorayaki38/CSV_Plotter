@@ -126,3 +126,6 @@ dmypy.json
 # Visual Studio
 *.suo
 .vs
+
+# Result Fig
+Result
