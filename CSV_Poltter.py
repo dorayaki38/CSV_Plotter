@@ -1,5 +1,7 @@
-﻿import math
+﻿from _typeshed import SupportsLenAndGetItem
+import math
 import os
+from numpy.core.shape_base import stack
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -7,12 +9,13 @@ import math
 import tkinter.filedialog
 
 from matplotlib.ticker import ScalarFormatter
+from pandas.core.frame import DataFrame
 
 #My Module
 import isDirNull
 
 class CSV_Poltter:
-	def csv_poltter(self, file_path = None, DataFrame = None, is_Check=True):
+	def csv_poltter(self, file_path: str = None, is_Check: bool =True):
 		print("csv_poltter")
 		while not file_path:
 			file_path = self._open_folder()
@@ -26,11 +29,15 @@ class CSV_Poltter:
 			isDirNull.result_output_folder(f"./{result_folder_name}/{basename_without_extension}/Figure")
 
 		# データの読み込み
-		fig = DataFrame.plot(x='frame', y='liquid_volume')
+		dataframe: DataFrame = pd.read_csv(file_path)
+		axes_x_name = self._ask_which_data_to_use(dataframe, "x")
+		axes_y_name = self._ask_which_data_to_use(dataframe, "y")
+		
+		fig = dataframe.plot(axes_x_name, axes_y_name)
 		fig.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
 	
 		# y軸のリミットを設定
-		fig.set_ylim(_cal_ylim(fig))
+		fig.set_ylim(self._cal_ylim(fig))
 
 		# ラベル設定
 		plt.xlabel('Frame number', fontsize=16)
@@ -46,7 +53,7 @@ class CSV_Poltter:
 		plt.close('all')
 
 
-	def _open_folder(self):
+	def _open_folder(self) -> str:
 		print("グラフ化するCSVファイルを選んでください")
 		file_type = [('CSVファイル', '*.csv'),('CSVファイル', '*.txt')]
 		
@@ -58,7 +65,7 @@ class CSV_Poltter:
 		root.destroy()
 		return file_path
 
-	def _cal_ylim(self, fig, y_min = 0, y_max = 0):
+	def _cal_ylim(self, fig: Axes, y_min: float = 0, y_max: float = 0) -> (float, float):
 		# 元データによってy軸の基準を変える。
 		y_min_raw, y_max_raw = fig.get_ylim()
 		
@@ -75,6 +82,21 @@ class CSV_Poltter:
 				y_max = y_max_raw
 
 		return y_min, y_max
+
+	def _ask_which_data_to_use(self, dataframe: DataFrame, axis: str) -> str:
+		headers = list(dataframe.columns.values)
+		
+		print(f"どの列を {axis} 軸に設定しますか。")
+		index_count = 0
+		for i, header in enumerate(headers):
+			print(f"{i} : {headers[i]}")
+			index_count += 1
+
+		select = -1
+		while select < -1 or index_count < select:
+			select = input('インデックスを指定してください: ')
+		print(f"{axis} 軸に{headers[select]} を設定しました。")
+		return str(headers[select])
 
 if __name__ == '__main__':
 	poltter = CSV_Poltter()
