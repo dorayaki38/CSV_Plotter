@@ -29,21 +29,8 @@ class CSV_Poltter:
 		fig = DataFrame.plot(x='frame', y='liquid_volume')
 		fig.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
 	
-
-		# 元データによってy軸の基準を変える。
-		y_min_raw, y_max_raw = fig.get_ylim()
-	
-		if y_min_raw > 0:
-			y_min = 0
-		else:
-			y_min = y_min_raw
-
-		if y_max_raw < 0:
-			y_max = 0
-		else:
-			y_max = y_max_raw
-
-		fig.set_ylim(y_min, y_max)
+		# y軸のリミットを設定
+		fig.set_ylim(_cal_ylim(fig))
 
 		# ラベル設定
 		plt.xlabel('Frame number', fontsize=16)
@@ -70,6 +57,22 @@ class CSV_Poltter:
 
 		root.destroy()
 		return file_path
+
+	def _cal_ylim(self, fig, y_min = 0, y_max = 0):
+		# 元データによってy軸の基準を変える。
+		y_min_raw, y_max_raw = fig.get_ylim()
+		
+		if y_min_raw > 0:
+			y_min = 0
+		else:
+			y_min = y_min_raw
+
+		if y_max_raw < 0:
+			y_max = 0
+		else:
+			y_max = y_max_raw
+
+		return y_min, y_max
 
 if __name__ == '__main__':
 	poltter = CSV_Poltter()
