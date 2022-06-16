@@ -62,15 +62,17 @@ class CSV_Poltter:
 		# 元データによってy軸の基準を変える。
 		y_min_raw, y_max_raw = fig.get_ylim()
 		
-		if y_min_raw > 0:
-			y_min = 0
-		else:
-			y_min = y_min_raw
+		if not y_min != 0:
+			if y_min_raw > 0:
+				y_min = 0
+			else:
+				y_min = y_min_raw
 
-		if y_max_raw < 0:
-			y_max = 0
-		else:
-			y_max = y_max_raw
+		if not y_max != 0:
+			if y_max_raw < 0:
+				y_max = 0
+			else:
+				y_max = y_max_raw
 
 		return y_min, y_max
 
