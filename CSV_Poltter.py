@@ -80,7 +80,7 @@ class CSV_Poltter:
 			if y_max_raw < 0:
 				y_max = 0
 			else:
-				y_max = y_max_raw
+				y_max = y_max_raw * 1.1 # 上限ギリギリだと見にくいので10%のマージン
 
 		return y_min, y_max
 
