@@ -1,5 +1,4 @@
-﻿from _typeshed import SupportsLenAndGetItem
-import math
+﻿import math
 import os
 from numpy.core.shape_base import stack
 import pandas as pd
@@ -33,7 +32,7 @@ class CSV_Poltter:
 		axes_x_name = self._ask_which_data_to_use(dataframe, "x")
 		axes_y_name = self._ask_which_data_to_use(dataframe, "y")
 		
-		fig = dataframe.plot(axes_x_name, axes_y_name)
+		fig  = dataframe.plot(x = axes_x_name, y = axes_y_name)
 		fig.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
 	
 		# y軸のリミットを設定
@@ -65,7 +64,7 @@ class CSV_Poltter:
 		root.destroy()
 		return file_path
 
-	def _cal_ylim(self, fig: Axes, y_min: float = 0, y_max: float = 0) -> (float, float):
+	def _cal_ylim(self, fig, y_min: float = 0, y_max: float = 0) -> (float, float):
 		# 元データによってy軸の基準を変える。
 		y_min_raw, y_max_raw = fig.get_ylim()
 		
@@ -87,14 +86,17 @@ class CSV_Poltter:
 		headers = list(dataframe.columns.values)
 		
 		print(f"どの列を {axis} 軸に設定しますか。")
-		index_count = 0
+		index_count: int = 0
 		for i, header in enumerate(headers):
 			print(f"{i} : {headers[i]}")
 			index_count += 1
 
-		select = -1
-		while select < -1 or index_count < select:
-			select = input('インデックスを指定してください: ')
+		select: int = -1
+		while select < 0 or index_count - 1 < select:
+			try:
+				select = int(input('インデックスを指定してください: '))
+			except:
+				print("整数で入力してください。")
 		print(f"{axis} 軸に{headers[select]} を設定しました。")
 		return str(headers[select])
 
