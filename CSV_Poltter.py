@@ -39,8 +39,8 @@ class CSV_Poltter:
 		fig.set_ylim(self._cal_ylim(fig))
 
 		# ラベル設定
-		plt.xlabel('Frame number', fontsize=16)
-		plt.ylabel(r"Estimated volume of liquid [pixel$^3$]", fontsize=14)
+		plt.xlabel(self._ask_label_name(axes_x_name), fontsize=14)
+		plt.ylabel(self._ask_label_name(axes_y_name), fontsize=14)
 	
 		# グリッド設定
 		plt.minorticks_on()
@@ -101,6 +101,11 @@ class CSV_Poltter:
 				print("整数で入力してください。")
 		print(f"{axis} 軸に{headers[select]} を設定しました。")
 		return str(headers[select])
+
+	def _ask_label_name(self, labelname: str, unit: str = None) -> str:
+		if unit == None:
+			unit = input(f"{labelname}の単位を入力してください。なしの場合はEnterを押してください。: ")
+		return f"{labelname} [{unit}]"
 
 if __name__ == '__main__':
 	poltter = CSV_Poltter()
